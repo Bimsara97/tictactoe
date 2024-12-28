@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Game</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .game-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            gap: 1rem;
+        }
+
+        .game-status {
+            font-size: 1.25rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            background-color: #333;
+            padding: 8px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            background-color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .cell[data-value="X"] {
+            color: #2196F3;
+        }
+
+        .cell[data-value="O"] {
+            color: #f44336;
+        }
+
+        .cell:hover:not([data-value]) {
+            background-color: #f5f5f5;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .control-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .restart-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .restart-btn:hover {
+            background-color: #1976D2;
+        }
+
+        .menu-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .menu-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <button class="back-btn" onclick="location.href='main.html'">←</button>
+        <h1>Tic Tac Toe</h1>
+    </header>
+
+    <main class="game-container">
+        <div class="game-status" id="status">Player X's turn</div>
+        
+        <div class="board" id="board">
+            <button class="cell" data-index="0"></button>
+            <button class="cell" data-index="1"></button>
+            <button class="cell" data-index="2"></button>
+            <button class="cell" data-index="3"></button>
+            <button class="cell" data-index="4"></button>
+            <button class="cell" data-index="5"></button>
+            <button class="cell" data-index="6"></button>
+            <button class="cell" data-index="7"></button>
+            <button class="cell" data-index="8"></button>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn restart-btn" id="restart">Restart</button>
+            <button class="control-btn menu-btn" onclick="location.href='main.html'">Main Menu</button>
+        </div>
+    </main>
+
+    <script>
+        class TicTacToe {
+            constructor() {
+                this.board = Array(9).fill('');
+                this.currentPlayer = 'X';
+                this.gameEnded = false;
+
+                this.cells = document.querySelectorAll('.cell');
+                this.statusElement = document.getElementById('status');
+                this.restartButton = document.getElementById('restart');
+
+                this.cells.forEach(cell => {
+                    cell.addEventListener('click', () => this.handleMove(cell));
+                });
+                this.restartButton.addEventListener('click', () => this.restartGame());
+            }
+
+            handleMove(cell) {
+                const index = cell.dataset.index;
+                if (this.board[index] === '' && !this.gameEnded) {
+                    this.board[index] = this.currentPlayer;
+                    cell.textContent = this.currentPlayer;
+                    cell.dataset.value = this.currentPlayer;
+
+                    if (this.checkWin()) {
+                        // Store winner info and redirect to winner page
+                        localStorage.setItem('winner', this.currentPlayer);
+                        window.location.href = 'winner.html';
+                        return;
+                    } else if (this.checkDraw()) {
+                        localStorage.setItem('winner', 'draw');
+                        window.location.href = 'winner.html';
+                        return;
+                    }
+
+                    this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
+                    this.statusElement.textContent = `Player ${this.currentPlayer}'s turn`;
+                }
+            }
+
+            checkWin() {
+                const winPatterns = [
+                    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                    [0, 4, 8], [2, 4, 6] // Diagonals
+                ];
+
+                return winPatterns.some(pattern => {
+                    const [a, b, c] = pattern;
+                    return this.board[a] !== '' &&
+                           this.board[a] === this.board[b] &&
+                           this.board[a] === this.board[c];
+                });
+            }
+
+            checkDraw() {
+                return this.board.every(cell => cell !== '');
+            }
+
+            restartGame() {
+                this.board = Array(9).fill('');
+                this.currentPlayer = 'X';
+                this.gameEnded = false;
+                this.statusElement.textContent = `Player ${this.currentPlayer}'s turn`;
+                this.cells.forEach(cell => {
+                    cell.textContent = '';
+                    cell.dataset.value = '';
+                });
+            }
+        }
+
+        // Initialize the game
+        new TicTacToe();
+    </script>
+</body>
+</html>

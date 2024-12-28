@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Help</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: #FF9800;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .instruction-section {
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        p, li {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin: 2rem auto;
+            padding: 0.75rem;
+            background-color: #FF9800;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background-color: #F57C00;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>How to Play</h1>
+    </header>
+
+    <main class="content">
+        <div class="instruction-section">
+            <h2>Game Rules</h2>
+            <ul>
+                <li>The game is played on a 3x3 grid</li>
+                <li>Players take turns placing their symbol (X or O) in empty squares</li>
+                <li>The first player uses X, the second player uses O</li>
+                <li>A player wins by getting three of their symbols in a row (horizontally, vertically, or diagonally)</li>
+                <li>If all squares are filled and no player has won, the game is a draw</li>
+            </ul>
+        </div>
+
+        <div class="instruction-section">
+            <h2>How to Win</h2>
+            <p>To win the game, you need to think strategically:</p>
+            <ul>
+                <li>Try to create multiple winning opportunities</li>
+                <li>Block your opponent when they have two in a row</li>
+                <li>Control the center square when possible</li>
+                <li>Watch for diagonal opportunities</li>
+            </ul>
+        </div>
+
+        <div class="instruction-section">
+            <h2>Controls</h2>
+            <ul>
+                <li>Tap or click any empty square to place your symbol</li>
+                <li>Use the restart button to start a new game</li>
+                <li>The game status will show whose turn it is</li>
+            </ul>
+        </div>
+
+        <a href="main.html" class="back-btn">Back to Menu</a>
+    </main>
+</body>
+</html>
